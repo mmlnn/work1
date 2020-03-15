@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+void countcharacter(char*File)//字符数函数 
+{
+int count=0;//计数
+char ch;//空
+FILE *f=fopen(File,"r");
+while((ch=fgetc(f))!=EOF)
+{if(ch!=' '&&ch!='\n'&&ch!='\t')//如果不为空格、换行符、tab
+    count++;}
+fclose(f);
+printf("字符数为%d\n\n",count);
+
+}
+
+void countword(char*File)//单词数函数
+{int tag=0;
+int count=0;
+char ch;
+FILE *f=fopen(File,"r");
+while((ch=fgetc(f))!=EOF)
+{
+if((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')) tag=1;
+        else if(tag==1){  //ch不是字母且标志为1时则说明刚检测完一个单词
+            count++;
+            tag=0;
+}
+}
+
+fclose(f);
+printf("单词数为%d\n\n",count);
+}
+
+
+void countline(char*File)  //行数函数
+{
+int count=0;
+char ch;
+FILE *f=fopen(File,"r");
+ while((ch=fgetc(f))!=EOF){
+       if(ch=='\n') count++;
+    }
+count++; //文件结束时当前行加一
+fclose(f);
+if(f!=NULL) printf("行数为%d\n\n",count);
+}
+
+int main()
+{
+   FILE *f;
+    char function;  //控制功能 
+    char File[100]; //存储文件名 
+    int a; 
+    do{ a=0;
+    printf("输入需被执行操作的文件地址:\n");
+scanf("%s",File);
+if((f=fopen(File,"r"))==NULL)  //若找不到文件 
+{printf("找不到此文件，请重新输入\n");
+a=1;}}while(a==1);
+
+   while(1)
+   {printf("c:  统计字符数  w：统计单词数  l：统计行数  b:退出") ;     
+printf("\n输入所选择的操作 :");
+scanf(" %c",&function);
+if(function=='b'){break;}
+
+switch(function){
+case 'c': countcharacter(File);break;
+case 'w': countword(File);break;
+case 'l': countline(File);break;
+case 'b': break;
+default : printf("输入错误，请重新输入\n");
+}
+}
+}
